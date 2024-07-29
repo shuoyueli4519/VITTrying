@@ -11,6 +11,7 @@
 - model.py是VIT模型文件
 - train.py用于训练VIT模型
 - run.py用于测试训练出模型的准确率
+- 使用python train.py进行训练(模型参数可更改)，使用python run.py进行准确率验证
 ## 相关问题
 - 目前10轮训练下准确率只有64%左右，由于cifar10数据集太小、像素低和VIT的固有缺陷导致准确率不高
 ![alt text](assets/2024-07-29_13-22.png)
