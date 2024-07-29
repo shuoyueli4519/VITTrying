@@ -26,6 +26,13 @@ parser.add_argument('--dimhead', default="512", type=int)
 
 args = parser.parse_args()
 
+usewandb = ~args.nowandb
+if usewandb:
+    import wandb
+    water_mark = f"Vit_lr={args.lr}"
+    wandb.init(project="vit-cifar10", name=water_mark)
+    wandb.config.update(args)
+
 bs = int(args.bs)
 imsize = int(args.size)
 
@@ -86,10 +93,20 @@ def train(epoch):
     return train_loss/(batch_idx+1)
 
 if __name__ == '__main__':
+    if usewandb:
+        wandb.watch(net)
+        
     for epoch in range(int(args.n_epochs)):
         train_loss = train(epoch)
         scheduler.step()
         print(f"Epoch {epoch} finished, loss: {train_loss}")
+        if usewandb:
+            wandb.log({'epoch': epoch, 'train_loss': train_loss, "lr": optimizer.param_groups[0]["lr"]})
+        
     net = net.to('cpu')
     torch.save(net.state_dict(), f"vit.pkl")
+    
+    if usewandb:
+        wandb.save(f"vit.pkl")
+        wandb.finish()
     
