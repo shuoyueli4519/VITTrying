@@ -15,3 +15,4 @@
 ## 相关问题
 - 目前10轮训练下准确率只有64%左右，由于cifar10数据集太小、像素低和VIT的固有缺陷导致准确率不高
 ![alt text](assets/2024-07-29_13-22.png)
+- wandb使用先wandb.init(project=, name= )初始化wandb仓库，使用wandb.log()进行参数的记载，调用一次则增加一次曲线数据点，使用wandb.watch()监控网络内参变化，记得改频率，否则是1000个batch记录一次，最后使用wandb.finish()结束wandb监控
